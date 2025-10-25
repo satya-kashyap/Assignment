@@ -1,13 +1,31 @@
-<section
-  class="h-screen flex flex-col items-center justify-center text-center text-white"
-  style="background: linear-gradient(to bottom, #00172a, #000000);"
->
-  <div>
-    <h1 class="text-5xl md:text-6xl font-light mb-4">
-      Make Something Wonderful
-    </h1>
-    <p class="italic text-gray-300 text-lg md:text-xl">
-      Steve Jobs in his own words.
+<section class="min-h-screen flex flex-col md:flex-row w-full">
+  <!-- Left: Quote and Text -->
+  <div
+    class="flex flex-col justify-center items-center bg-white text-gray-800 px-8 md:px-20 py-20 md:w-1/2 w-full text-center md:text-left">
+    <div class="max-w-md space-y-6">
+      <h2 class="text-3xl md:text-4xl font-serif italic text-[#005b82] leading-snug">
+        “The people who are crazy enough to think they can change the world are the ones who do.”
+      </h2>
+      <p class="text-lg md:text-xl text-gray-600 font-light leading-relaxed">
+        Steve’s journey was never about technology alone — it was about
+        humanity, creativity, and leaving something meaningful behind.
+      </p>
+      <div class="h-[2px] w-16 bg-gradient-to-r from-[#005b82] to-transparent mx-auto md:mx-0"></div>
+    </div>
+  </div>
+
+  <!-- Right: Image and Caption -->
+  <div class="relative bg-black flex flex-col justify-center items-center md:w-1/2 w-full py-20 px-6">
+    <div class="relative group w-[80%] max-w-[400px]">
+      <img src="assets/images/sjobs1.jpg" alt="Steve Jobs portrait"
+        class="w-full h-auto rounded-md object-cover border-[6px] border-gray-700 shadow-[0_8px_24px_rgba(0,0,0,0.6)] transition-transform duration-500 group-hover:scale-105" />
+      <div
+        class="absolute inset-0 rounded-md ring-1 ring-white/10 group-hover:ring-2 group-hover:ring-[#005b82] pointer-events-none">
+      </div>
+    </div>
+
+    <p class="text-gray-400 text-sm italic mt-6 max-w-xs text-center leading-snug">
+      Steve Jobs during an Apple keynote, 2007.
     </p>
   </div>
 </section>
