@@ -1,23 +1,47 @@
-<div class="fixed right-10 top-1/2 -translate-y-1/2 flex flex-col items-end z-50 select-none">
-  <!-- Scrollbar track -->
-  <div class="relative h-[80vh] w-[6px] bg-neutral-300/60 rounded-full flex flex-col justify-between">
-    <ng-container *ngFor="let s of sections; let i = index">
-      <div class="relative w-full flex-1 my-[2px] bg-neutral-300/60 rounded-full overflow-hidden cursor-pointer"
-        (click)="navigate.emit(s.id)">
-        <div class="absolute left-0 top-0 w-full bg-blue-600 rounded-full transition-all duration-500 ease-out"
-          [style.height.%]="progressSegments[i]"></div>
-      </div>
-    </ng-container>
-  </div>
+<!-- Hover zone wrapper -->
+<div class="fixed right-0 top-0 h-screen w-[120px] z-50" (mouseenter)="isHovered = true"
+  (mouseleave)="isHovered = false">
 
-  <!-- Labels -->
-  <div class="absolute right-[2.5rem] top-1/2 -translate-y-1/2 flex flex-col justify-between h-[80vh] py-3">
-    <div *ngFor="let s of sections" class="cursor-pointer text-right transition-all duration-300"
-      (click)="navigate.emit(s.id)">
-      <span class="text-[0.95rem] font-medium" [class.text-blue-700]="s.id === activeSection"
-        [class.text-gray-600]="s.id !== activeSection">
-        {{ s.label }}
-      </span>
+  <!-- Scrollbar + labels container -->
+  <div class="absolute right-10 top-1/2 -translate-y-1/2 flex flex-col items-end select-none">
+
+    <!-- Active section label -->
+    <div *ngIf="hasScrolled"
+      class="absolute -top-10 right-0 text-sm font-semibold text-blue-700 transition-opacity duration-300">
+      {{ getActiveLabel() }}
     </div>
+
+    <!-- Scroll track -->
+    <div *ngIf="hasScrolled" class="relative h-[80vh] w-[6px] bg-neutral-300/70 transition-all duration-300 ease-in-out"
+      [class.w-[12px]]="isHovered" [class.w-[6px]]="!isHovered">
+
+      <!-- Blue filled progress bar -->
+      <div class="absolute left-0 top-0 bg-blue-600 transition-all duration-500 ease-out"
+        [style.height.%]="overallProgress" [class.w-[12px]]="isHovered" [class.w-[6px]]="!isHovered"
+        [class.rounded-none]="true">
+      </div>
+
+      <!-- Section gaps (visual dividers) -->
+      <ng-container *ngFor="let i of sectionPositions">
+        <div class="absolute left-0 w-full h-[2px] bg-white/80" [style.top.%]="i">
+        </div>
+      </ng-container>
+    </div>
+
+    <!-- Section labels (only on hover) -->
+    <div *ngIf="hasScrolled"
+      class="absolute right-[2.5rem] top-0 h-[80vh] flex flex-col items-end justify-start transition-opacity duration-300"
+      [class.opacity-0]="!isHovered" [class.opacity-100]="isHovered">
+      <ng-container *ngFor="let s of sections; let i = index">
+        <div class="absolute right-0 -translate-y-1/2 cursor-pointer transition-all duration-300"
+          [style.top.%]="(sectionPositions[i] || 0)" (click)="navigate.emit(s.id)">
+          <span class="text-[0.95rem] font-medium" [class.text-blue-700]="s.id === activeSection"
+            [class.text-gray-600]="s.id !== activeSection">
+            {{ s.label }}
+          </span>
+        </div>
+      </ng-container>
+    </div>
+
   </div>
 </div>

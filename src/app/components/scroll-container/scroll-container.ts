@@ -1,7 +1,4 @@
-import {
-  Component, ElementRef, ViewChild, AfterViewInit, HostListener, NgZone,
-  Input
-} from '@angular/core';
+import { Component, ElementRef, ViewChild, AfterViewInit, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CustomScrollbar } from '../custom-scrollbar/custom-scrollbar';
 import { Cover } from '../sections/cover/cover';
@@ -27,32 +24,62 @@ export class ScrollContainer implements AfterViewInit {
     { id: 'events', label: 'Events' },
     { id: 'credits', label: 'Credits' }
   ];
-  overallProgress = 0;
-  activeSection = 'cover';
-  segmentProgress: number[] = [];
-  sectionOffsets: { id: string; top: number; height: number }[] = [];
 
-  constructor(private ngZone: NgZone) {}
+  activeSection = 'cover';
+  overallProgress = 0;
+
+  sectionOffsets: { id: string; top: number; height: number }[] = [];
+  sectionPositions: number[] = [];
+  positionsReady = false;
 
   ngAfterViewInit() {
-    setTimeout(() => {
+    this.waitForImagesThenCalc().then(() => {
       this.calculateSectionOffsets();
       this.updateScrollProgress();
-    }, 500);
+      this.positionsReady = true;
+    });
 
     window.addEventListener('load', () => {
       this.calculateSectionOffsets();
       this.updateScrollProgress();
+      this.positionsReady = true;
     });
+  }
+
+  async waitForImagesThenCalc(timeout = 800) {
+    const container = this.content?.nativeElement;
+    if (!container) return;
+    const imgs: HTMLImageElement[] = Array.from(container.querySelectorAll('img'));
+    if (!imgs.length) {
+      await new Promise(r => setTimeout(r, 80));
+      return;
+    }
+
+    const loaders = imgs.map(img => {
+      return new Promise<void>(resolve => {
+        if (img.complete) return resolve();
+        const onload = () => { clean(); resolve(); };
+        const onerr = () => { clean(); resolve(); };
+        const clean = () => { img.removeEventListener('load', onload); img.removeEventListener('error', onerr); };
+        img.addEventListener('load', onload);
+        img.addEventListener('error', onerr);
+      });
+    });
+
+    await Promise.race([
+      Promise.all(loaders),
+      new Promise(r => setTimeout(r, timeout))
+    ]);
   }
 
   @HostListener('window:scroll')
   onScroll() {
-    this.ngZone.run(() => this.updateScrollProgress());
+    this.updateScrollProgress();
   }
 
   @HostListener('window:resize')
   onResize() {
+
     this.calculateSectionOffsets();
     this.updateScrollProgress();
   }
@@ -63,64 +90,59 @@ export class ScrollContainer implements AfterViewInit {
       if (!el) return { id: s.id, top: 0, height: 0 };
       const rect = el.getBoundingClientRect();
       const top = window.scrollY + rect.top;
-      return { id: s.id, top, height: rect.height };
+      const height = rect.height;
+      return { id: s.id, top, height };
+    });
+
+    const windowHeight = window.innerHeight;
+    const totalScrollable = Math.max(document.body.scrollHeight - windowHeight, 1);
+
+    this.sectionPositions = this.sectionOffsets.map(s => {
+      const adjustedTop = s.top - windowHeight / 2;
+
+      const pct = (adjustedTop / totalScrollable) * 100;
+      return Math.min(100, Math.max(0, pct));
     });
   }
 
-  // updateScrollProgress() {
-  //   const scrollTop = window.scrollY;
+  updateScrollProgress() {
+    const scrollTop = window.scrollY;
+    const windowHeight = window.innerHeight;
+    const totalScrollable = Math.max(document.body.scrollHeight - windowHeight, 1);
 
-  //   this.segmentProgress = this.sectionOffsets.map(section => {
-  //     const start = section.top;
-  //     const end = section.top + section.height;
-  //     if (scrollTop < start) return 0;
-  //     if (scrollTop > end) return 100;
-  //     return ((scrollTop - start) / section.height) * 100;
-  //   });
+    for (let i = 0; i < this.sectionOffsets.length; i++) {
+      const section = this.sectionOffsets[i];
+      const start = section.top;
+      const end = section.top + section.height;
 
-  //   for (const section of this.sectionOffsets) {
-  //     if (scrollTop >= section.top - 300 && scrollTop < section.top + section.height - 300) {
-  //       this.activeSection = section.id;
-  //       break;
-  //     }
-  //   }
-  // }
+      if (
+        scrollTop >= start - windowHeight / 2 &&
+        scrollTop < end - windowHeight / 2
+      ) {
+        this.activeSection = section.id;
 
-updateScrollProgress() {
-  const scrollTop = window.scrollY;
-  const docHeight = document.body.scrollHeight - window.innerHeight;
+        const sectionProgress = ((scrollTop - start) / section.height);
+        const startPct = this.sectionPositions[i];
+        const endPct = this.sectionPositions[i + 1] ?? 100;
+        const range = endPct - startPct;
 
-  // ✅ Ensure the bar fully fills at the very bottom
-  this.overallProgress = Math.min((scrollTop / docHeight) * 100, 100);
+        this.overallProgress = Math.min(100, Math.max(0, startPct + sectionProgress * range));
+        break;
+      }
+    }
 
-  // ✅ Optional smoothing for nicer transition at section ends
-  if (scrollTop + window.innerHeight >= document.body.scrollHeight - 5) {
-    this.overallProgress = 100;
-  }
-
-  // Update segment-wise progress for section fills
-  this.segmentProgress = this.sectionOffsets.map(section => {
-    const start = section.top;
-    const end = section.top + section.height;
-    if (scrollTop < start) return 0;
-    if (scrollTop > end) return 100;
-    return ((scrollTop - start) / section.height) * 100;
-  });
-
-  // Active section tracking
-  for (const section of this.sectionOffsets) {
-    if (scrollTop >= section.top - 300 && scrollTop < section.top + section.height - 300) {
-      this.activeSection = section.id;
-      break;
+    //100% if user is near bottom
+    const bottomThreshold = 5;
+    if (scrollTop + windowHeight >= document.body.scrollHeight - bottomThreshold) {
+      this.overallProgress = 100;
     }
   }
-}
-
 
   scrollToSection(id: string) {
     const target = document.getElementById(id);
     if (!target) return;
-    const top = target.offsetTop;
-    window.scrollTo({ top, behavior: 'smooth' });
+    window.scrollTo({ top: target.offsetTop, behavior: 'smooth' });
   }
 }
+
+

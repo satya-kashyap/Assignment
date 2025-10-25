@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, HostListener, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -11,7 +11,24 @@ import { CommonModule } from '@angular/common';
 export class CustomScrollbar {
   @Input() sections: { id: string; label: string }[] = [];
   @Input() activeSection = '';
-  @Input() progressSegments: number[] = []; // array of per-section percentages
+  @Input() progressSegments: number[] = [];
   @Output() navigate = new EventEmitter<string>();
   @Input() overallProgress = 0;
+  @Input() scrollposition = 0;
+  @Input() sectionPositions: number[] = [];
+  scrollTimeout: any;
+  isHovered = false;
+  hasScrolled = false;
+
+  @HostListener('window:scroll')
+  onScroll() {
+    this.hasScrolled = true;
+  }
+
+  getActiveLabel(): string {
+    const active = this.sections.find(s => s.id === this.activeSection);
+    return active?.label || '';
+  }
+
+
 }

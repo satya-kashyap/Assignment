@@ -16,7 +16,7 @@ export class Cover implements AfterViewInit {
   ngAfterViewInit() {
     const tl = gsap.timeline();
 
-    // Step 1: Image rises from bottom
+    // Image rises from bottom
     tl.to(this.photoWrapper.nativeElement, {
       opacity: 1,
       y: 0,
@@ -24,7 +24,7 @@ export class Cover implements AfterViewInit {
       ease: 'power3.out'
     });
 
-    // Step 2: Image clears from blur
+    // Image clears from blur
     tl.fromTo(
       this.coverImg.nativeElement,
       { filter: 'blur(12px)', opacity: 0.6 },
@@ -32,14 +32,14 @@ export class Cover implements AfterViewInit {
       '-=2'
     );
 
-    // Step 3: Fade in first line
+    // Fade in first line
     tl.to(
       this.line1.nativeElement,
       { opacity: 1, y: -10, duration: 1.2, ease: 'power2.out' },
       '+=0.6'
     );
 
-    // Step 4: Fade in second line
+    // Fade in second line
     tl.to(
       this.line2.nativeElement,
       { opacity: 1, y: -5, duration: 1.0, ease: 'power1.out' },
