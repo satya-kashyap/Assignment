@@ -1,0 +1,35 @@
+:host {
+  display: block;
+  width: 100%;
+  height: 100vh;
+  background-color: var(--background-gray);
+  overflow: hidden;
+  font-family: 'Georgia', 'Times New Roman', serif;
+  position: relative;
+}
+
+:host::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, transparent 60%, rgba(0, 0, 0, 0.1) 100%);
+  pointer-events: none;
+}
+
+img {
+  display: block;
+  object-fit: contain;
+  border-radius: 2px;
+}
+
+h1 {
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  margin: 0;
+  color: white;
+}
+
+p {
+  color: #0a0a0a;
+  margin: 0;
+} 

@@ -1,0 +1,39 @@
+<div class="fixed right-10 top-1/2 -translate-y-1/2 flex flex-col items-end z-50 transition-opacity duration-700"
+  [class.opacity-0]="!showScrollbar" [class.opacity-100]="showScrollbar">
+
+  <!-- Active section title -->
+  <div class="absolute -top-14 right-1 text-[1rem] font-semibold tracking-wide transition-all duration-300"
+    [class.text-blue-700]="showScrollbar" [class.text-gray-600]="!showScrollbar" [class.opacity-0]="!showScrollbar"
+    [class.opacity-100]="showScrollbar">
+    {{ activeSection | titlecase }}
+  </div>
+
+  <!-- Scrollbar -->
+  <div
+    class="relative h-[75vh] w-[6px] bg-neutral-300/70 rounded-full flex flex-col justify-between transition-all duration-500">
+
+    <!-- Blue progress -->
+    <div class="absolute left-0 top-0 w-[6px] bg-blue-600 rounded-full transition-all duration-500 ease-out"
+      [style.height.%]="scrollProgressPercent">
+    </div>
+
+    <!-- Handle -->
+    <div class="absolute left-0 w-[6px] bg-blue-700 rounded-full cursor-grab transition-all duration-500 ease-out"
+      [style.height.px]="handleHeightPx" [style.top.px]="handleTopPx" appDragHandle
+      (dragging)="onHandleDrag($any($event))">
+    </div>
+
+    <!-- Section labels -->
+    <div class="absolute inset-0 flex flex-col justify-between items-end py-3 pr-6">
+      <div *ngFor="let s of sections"
+        class="relative flex items-center justify-end cursor-pointer transition-all duration-300"
+        (click)="onNavigate(s.id)">
+        <span class="text-[1rem] font-medium tracking-wide transition-all duration-300 select-none mr-3"
+          [class.text-blue-700]="s.id === activeSection" [class.text-gray-500]="s.id !== activeSection"
+          [class.opacity-0]="!showLabels" [class.opacity-100]="showLabels">
+          {{ s.label }}
+        </span>
+      </div>
+    </div>
+  </div>
+</div>

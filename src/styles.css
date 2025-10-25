@@ -1,1 +1,55 @@
-/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  overflow: hidden; /* GSAP controls movement */
+  font-family: 'Inter', sans-serif;
+  background: #faf8f5;
+  color: #111;
+}
+
+/* Hide scrollbars visually */
+html {
+  scrollbar-width: none;
+}
+html::-webkit-scrollbar {
+  display: none;
+}
+
+section {
+  position: relative;
+  width: 100vw;         
+  height: 100vh;       
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Forces section backgrounds to fill even under transforms */
+section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: inherit;
+  z-index: -1;
+}
+
+.will-change-transform {
+  will-change: transform;
+}
+
+p {
+  line-height: 1.7;
+}
+
+:root {
+  --background-gray: #646464; /* slightly deeper gray */
+}
+
+

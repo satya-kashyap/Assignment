@@ -1,0 +1,12 @@
+:host {
+  display: block;
+}
+
+img {
+  transition: transform 0.6s ease, opacity 0.6s ease;
+}
+
+img:hover {
+  transform: scale(1.02);
+  opacity: 0.95;
+}

@@ -1,12 +1,14 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { ScrollContainer } from './components/scroll-container/scroll-container';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [ScrollContainer],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
 export class App {
-  protected title = 'stevejobs-scroll-clone';
+  @ViewChild('scrollContainer') scrollContainer!: ElementRef<HTMLDivElement>;
+  constructor() { }
+
 }

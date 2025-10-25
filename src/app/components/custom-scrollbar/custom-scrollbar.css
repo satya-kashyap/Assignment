@@ -1,0 +1,9 @@
+.scrollbar {
+  z-index: 50;
+  user-select: none;
+}
+
+:host {
+  display: block;
+}
+

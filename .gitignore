@@ -40,3 +40,23 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Angular CLI generated coverage reports
+/coverage/
+
+# Temporary local test databases or logs
+*.log
+
+# Backup files
+*.bak
+*.tmp
+
+# Local package manager lock files (optional)
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
