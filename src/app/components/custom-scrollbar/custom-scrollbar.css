@@ -6,3 +6,16 @@
 :host {
   display: block;
 }
+
+@media (max-width: 768px) {
+  html, body {
+    overscroll-behavior: none;
+    touch-action: pan-y;
+    overflow-x: hidden; 
+  }
+
+  .scroll-container {
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
+}

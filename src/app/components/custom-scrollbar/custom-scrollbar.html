@@ -97,9 +97,9 @@
       </ng-container>
     </div> -->
 
-    <div class="relative h-[65vh] w-[5px] bg-neutral-300/70 rounded-full touch-none" (touchstart)="onTouchStart($event)"
+    <div class="relative h-[65vh] w-[10px] bg-neutral-300/70 rounded-full touch-none" (touchstart)="onTouchStart($event)"
       (touchmove)="onTouchMove($event)" (touchend)="onTouchEnd()">
-      <div class="absolute left-0 top-0 bg-blue-600 rounded-full" [style.height.%]="overallProgress" style="width:5px;">
+      <div class="absolute left-0 top-0 bg-blue-600 rounded-full" [style.height.%]="overallProgress" style="width:10px;">
       </div>
       <ng-container *ngFor="let i of sectionPositions">
         <div class="absolute left-0 w-full h-[2px] bg-white/80" [style.top.%]="i"></div>
