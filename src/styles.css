@@ -1,28 +1,18 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-/* 
-html, body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  width: 100%;
-  overflow-x: hidden; 
-  overflow-y: scroll;
-  font-family: 'Inter', sans-serif;
-  background: #faf8f5;
-  color: #111;
-} */
 
-html, body {
+
+html,
+body {
   margin: 0;
   padding: 0;
   min-height: 100%;
   width: 100%;
-  overflow-y: scroll;   /* ✅ page scrolls but scrollbar hidden */
+  overflow-y: scroll;
   overflow-x: hidden;
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE/Edge */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
   font-family: 'Inter', sans-serif;
   background: #faf8f5;
   color: #111;
@@ -32,6 +22,7 @@ html, body {
 html {
   scrollbar-width: none;
 }
+
 html::-webkit-scrollbar {
   display: none;
 }
@@ -39,11 +30,11 @@ html::-webkit-scrollbar {
 section {
   position: relative;
   width: 100vw;
-  min-height: 100vh; /* ✅ Let sections grow if content longer than viewport */
+  min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: visible; /* ✅ Important for natural scroll */
+  overflow: visible;
 }
 
 section::before {
@@ -70,36 +61,28 @@ p {
 
 @media (max-width: 767px) {
 
-  /* 🟩 Outer wrapper – creates massive frame around the page */
   .mobile-shrink {
     display: flex;
     justify-content: center;
     align-items: flex-start;
     background: #faf8f5;
     overflow-x: hidden;
-
-    /* 🟦 Big vertical breathing space */
-    padding: 6rem 0;                 /* top and bottom spacing */
-
+    padding: 6rem 0;
     transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  /* 🧱 Inner frame – core page container */
   .mobile-shrink .inner-frame {
-    width: 60%;                      /* major shrink, heavy focus mode */
-    max-width: 600px;                /* limit max expansion */
+    width: 60%;
+    max-width: 600px;
     background: #faf8f5;
-    padding: 2rem 2.2rem;            /* soft, equal inner gap */
+    padding: 2rem 2.2rem;
     box-sizing: border-box;
     transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  /* 🧩 Each section fits perfectly inside the frame */
   .mobile-shrink .inner-frame section {
     width: 100%;
     margin: 0 auto;
     box-sizing: border-box;
   }
 }
-
-
