@@ -41,4 +41,33 @@ export class CustomScrollbar {
 
 
 
+// for touch dragging
+
+private isDragging = false;
+private barHeight = 0;
+private startY = 0;
+
+onTouchStart(event: TouchEvent) {
+  if (window.innerWidth >= 768) return; // only for mobile
+  this.isDragging = true;
+  this.barHeight = (event.target as HTMLElement).clientHeight;
+  this.startY = event.touches[0].clientY;
+  event.preventDefault();
+}
+
+onTouchMove(event: TouchEvent) {
+  if (!this.isDragging) return;
+
+  const touchY = event.touches[0].clientY - this.startY;
+  const scrollHeight = document.body.scrollHeight - window.innerHeight;
+  const newScroll = (touchY / this.barHeight) * scrollHeight;
+
+  window.scrollTo({ top: Math.min(scrollHeight, Math.max(0, newScroll)), behavior: 'auto' });
+}
+
+onTouchEnd() {
+  this.isDragging = false;
+}
+
+
 }

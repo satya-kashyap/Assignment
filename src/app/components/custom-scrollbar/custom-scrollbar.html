@@ -89,15 +89,23 @@
     [ngStyle]="{'top': activeSection === 'cover' ? '5.2rem' : '6rem'}" z-40 flex flex-col items-end transition-all
     duration-300 ease-in-out origin-top-right>
 
-    <div class="relative h-[65vh] w-[5px] bg-neutral-300/70 rounded-full">
-
+    <!-- <div class="relative h-[65vh] w-[5px] bg-neutral-300/70 rounded-full">
       <div class="absolute left-0 top-0 bg-blue-600 rounded-full" [style.height.%]="overallProgress" style="width:5px;">
       </div>
+      <ng-container *ngFor="let i of sectionPositions">
+        <div class="absolute left-0 w-full h-[2px] bg-white/80" [style.top.%]="i"></div>
+      </ng-container>
+    </div> -->
 
+    <div class="relative h-[65vh] w-[5px] bg-neutral-300/70 rounded-full touch-none" (touchstart)="onTouchStart($event)"
+      (touchmove)="onTouchMove($event)" (touchend)="onTouchEnd()">
+      <div class="absolute left-0 top-0 bg-blue-600 rounded-full" [style.height.%]="overallProgress" style="width:5px;">
+      </div>
       <ng-container *ngFor="let i of sectionPositions">
         <div class="absolute left-0 w-full h-[2px] bg-white/80" [style.top.%]="i"></div>
       </ng-container>
     </div>
+
 
     <div class="absolute right-[2rem] top-0 h-[65vh] flex flex-col items-end justify-start">
       <ng-container *ngFor="let s of sections; let i = index">
