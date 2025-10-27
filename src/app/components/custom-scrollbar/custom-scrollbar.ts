@@ -31,43 +31,37 @@ export class CustomScrollbar {
   }
 
   showMobileBar = false;
-
   @Output() toggleBar = new EventEmitter<boolean>();
 
   toggleMobileBar() {
     this.showMobileBar = !this.showMobileBar;
-    this.toggleBar.emit(this.showMobileBar);  
+    this.toggleBar.emit(this.showMobileBar);
   }
 
+  // for mobile touch dragging...
+  private isDragging = false;
+  private barHeight = 0;
+  private startY = 0;
 
+  onTouchStart(event: TouchEvent) {
+    if (window.innerWidth >= 768) return;
+    this.isDragging = true;
+    this.barHeight = (event.target as HTMLElement).clientHeight;
+    this.startY = event.touches[0].clientY;
+    event.preventDefault();
+  }
 
-// for touch dragging
+  onTouchMove(event: TouchEvent) {
+    if (!this.isDragging) return;
+    const touchY = event.touches[0].clientY - this.startY;
+    const scrollHeight = document.body.scrollHeight - window.innerHeight;
+    const newScroll = (touchY / this.barHeight) * scrollHeight;
+    window.scrollTo({ top: Math.min(scrollHeight, Math.max(0, newScroll)), behavior: 'auto' });
+  }
 
-private isDragging = false;
-private barHeight = 0;
-private startY = 0;
-
-onTouchStart(event: TouchEvent) {
-  if (window.innerWidth >= 768) return; // only for mobile
-  this.isDragging = true;
-  this.barHeight = (event.target as HTMLElement).clientHeight;
-  this.startY = event.touches[0].clientY;
-  event.preventDefault();
-}
-
-onTouchMove(event: TouchEvent) {
-  if (!this.isDragging) return;
-
-  const touchY = event.touches[0].clientY - this.startY;
-  const scrollHeight = document.body.scrollHeight - window.innerHeight;
-  const newScroll = (touchY / this.barHeight) * scrollHeight;
-
-  window.scrollTo({ top: Math.min(scrollHeight, Math.max(0, newScroll)), behavior: 'auto' });
-}
-
-onTouchEnd() {
-  this.isDragging = false;
-}
+  onTouchEnd() {
+    this.isDragging = false;
+  }
 
 
 }

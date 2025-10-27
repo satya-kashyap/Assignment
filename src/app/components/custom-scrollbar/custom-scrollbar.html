@@ -1,23 +1,17 @@
-<!-- Hover zone wrapper -->
 <div class="hidden md:block fixed right-0 top-0 h-screen w-[120px] z-50" (mouseenter)="isHovered = true"
   (mouseleave)="isHovered = false">
-
-  <!-- Scrollbar + labels container -->
+  
   <div class="absolute right-10 top-1/2 -translate-y-1/2 flex flex-col items-end select-none">
-
-    <!-- Active section label -->
     @if (hasScrolled) {
     <div class="absolute -top-10 right-0 text-sm font-semibold text-blue-700 transition-opacity duration-300">
       {{ getActiveLabel() }}
     </div>
     }
 
-    <!-- Scroll track -->
     @if (hasScrolled){
     <div class="relative h-[80vh] w-[6px] bg-neutral-300/70 transition-all duration-300 ease-in-out"
       [class.w-[12px]]="isHovered" [class.w-[6px]]="!isHovered">
 
-      <!-- Blue filled progress bar -->
       <div class="absolute left-0 top-0 bg-blue-600 transition-all duration-500 ease-out"
         [style.height.%]="overallProgress" [class.w-[12px]]="isHovered" [class.w-[6px]]="!isHovered"
         [class.rounded-none]="true">

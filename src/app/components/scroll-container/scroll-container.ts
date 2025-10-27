@@ -31,14 +31,12 @@ export class ScrollContainer implements AfterViewInit {
   sectionOffsets: { id: string; top: number; height: number }[] = [];
   sectionPositions: number[] = [];
   positionsReady = false;
-
   showMobileBar = false;
-  // onToggleBar(value: boolean) {
-  //   this.showMobileBar = value;
-  // }
+
   onToggleBar(isOpen: boolean) {
     this.showMobileBar = isOpen;
   }
+  
   ngAfterViewInit() {
     this.waitForImagesThenCalc().then(() => {
       this.calculateSectionOffsets();
