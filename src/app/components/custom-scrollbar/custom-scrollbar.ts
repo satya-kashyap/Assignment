@@ -30,5 +30,18 @@ export class CustomScrollbar {
     return active?.label || '';
   }
 
+  showMobileBar = false;
+  //   toggleMobileBar() {
+  //   this.showMobileBar = !this.showMobileBar;
+  // }
+
+  @Output() toggleBar = new EventEmitter<boolean>();
+
+  toggleMobileBar() {
+    this.showMobileBar = !this.showMobileBar;
+    this.toggleBar.emit(this.showMobileBar);  // sends value to parent
+  }
+
+
 
 }
