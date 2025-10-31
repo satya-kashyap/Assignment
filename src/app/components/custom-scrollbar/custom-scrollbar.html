@@ -1,34 +1,36 @@
-<div class="hidden md:block fixed right-0 top-0 h-screen w-[120px] z-50" (mouseenter)="isHovered = true"
-  (mouseleave)="isHovered = false">
-  
-  <div class="absolute right-10 top-1/2 -translate-y-1/2 flex flex-col items-end select-none">
-    @if (hasScrolled) {
-    <div class="absolute -top-10 right-0 text-sm font-semibold text-blue-700 transition-opacity duration-300">
+<!-- Hover zone wrapper -->
+<div class="custom-scrollbar hidden md:block fixed right-0 top-0 h-screen w-[120px] z-50"
+  (mouseenter)="onScrollbarHover(true)" (mouseleave)="onScrollbarHover(false)">
+
+  <!-- Scrollbar + labels container -->
+  <div class="scrollbar-container absolute right-10 top-1/2 -translate-y-1/2 flex flex-col items-end select-none">
+
+    <!-- Active section label -->
+    <div class="scrollbar-label absolute -top-10 right-0 text-sm font-semibold text-blue-700 opacity-0">
       {{ getActiveLabel() }}
     </div>
-    }
 
-    @if (hasScrolled){
-    <div class="relative h-[80vh] w-[6px] bg-neutral-300/70 transition-all duration-300 ease-in-out"
-      [class.w-[12px]]="isHovered" [class.w-[6px]]="!isHovered">
+    <!-- Scroll track -->
+    <div class="scrollbar-track relative h-[80vh] w-[6px] bg-neutral-300/70 opacity-0 cursor-pointer"
+      [class.w-[12px]]="isHovered" [class.w-[6px]]="!isHovered" [class.cursor-grabbing]="isDesktopDragging"
+      [class.cursor-grab]="!isDesktopDragging && isHovered" (click)="onDesktopTrackClick($event)"
+      (mousedown)="onMouseDown($event)">
 
-      <div class="absolute left-0 top-0 bg-blue-600 transition-all duration-500 ease-out"
+      <!-- Blue filled progress bar -->
+      <div class="absolute left-0 top-0 bg-blue-600 transition-all duration-500 ease-out pointer-events-none"
         [style.height.%]="overallProgress" [class.w-[12px]]="isHovered" [class.w-[6px]]="!isHovered"
         [class.rounded-none]="true">
       </div>
 
       <!-- Section gaps -->
       <ng-container *ngFor="let i of sectionPositions">
-        <div class="absolute left-0 w-full h-[2px] bg-white/80" [style.top.%]="i">
+        <div class="absolute left-0 w-full h-[2px] bg-white/80 pointer-events-none" [style.top.%]="i">
         </div>
       </ng-container>
     </div>
-    }
 
     <!-- Section labels -->
-    @if (hasScrolled) {
-    <div
-      class="absolute right-[2.5rem] top-0 h-[80vh] flex flex-col items-end justify-start transition-opacity duration-300"
+    <div class="scrollbar-labels absolute right-[2.5rem] top-0 h-[80vh] flex flex-col items-end justify-start opacity-0"
       [class.opacity-0]="!isHovered" [class.opacity-100]="isHovered">
       <ng-container *ngFor="let s of sections; let i = index">
         <div class="absolute right-0 -translate-y-1/2 cursor-pointer transition-all duration-300"
@@ -40,10 +42,10 @@
         </div>
       </ng-container>
     </div>
-    }
 
   </div>
 </div>
+
 
 
 
@@ -75,7 +77,8 @@
     [ngStyle]="{'top': '4.5rem'}">
 
     <div class="relative h-[65vh] w-[10px] bg-neutral-300/70 rounded-full touch-none"
-      (touchstart)="onTouchStart($event)" (touchmove)="onTouchMove($event)" (touchend)="onTouchEnd()">
+      (touchstart)="onTouchStart($event)" (touchmove)="onTouchMove($event)" (touchend)="onTouchEnd()"
+      (click)="onMobileTrackClick($event)">
 
       <div class="absolute left-0 top-0 bg-blue-600 rounded-full transition-all duration-100"
         [style.height.%]="overallProgress" style="width:10px;">

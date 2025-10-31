@@ -14,6 +14,11 @@ export class Cover implements AfterViewInit {
   @ViewChild('line2', { static: true }) line2!: ElementRef<HTMLDivElement>;
 
   ngAfterViewInit() {
+    // Set initial visibility as fallback
+    gsap.set([this.photoWrapper.nativeElement, this.line1.nativeElement, this.line2.nativeElement], {
+      opacity: 0
+    });
+
     const tl = gsap.timeline();
 
     // Image rises from bottom

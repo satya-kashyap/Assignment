@@ -1,0 +1,48 @@
+:host {
+  display: block;
+  width: 100%;
+  font-family: 'Georgia', 'Times New Roman', serif;
+}
+
+/* Table of contents hover effects */
+.border-b:hover {
+  border-color: #005b82;
+  transition: border-color 0.3s ease;
+}
+
+.border-b:hover h3 {
+  color: #003d5a;
+  transition: color 0.3s ease;
+}
+
+/* Enhanced styling for images */
+img {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+img:hover {
+  transform: scale(1.05);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* Smooth section transitions */
+section {
+  scroll-snap-align: start;
+}
+
+/* Responsive typography */
+@media (max-width: 768px) {
+  .text-7xl {
+    font-size: 3rem;
+    line-height: 1.1;
+  }
+  
+  .text-5xl {
+    font-size: 2.5rem;
+    line-height: 1.2;
+  }
+  
+  .grid-cols-2 {
+    grid-template-columns: 1fr;
+  }
+}

@@ -103,7 +103,8 @@ export class ScrollContainer implements AfterViewInit {
     const totalScrollable = Math.max(document.body.scrollHeight - windowHeight, 1);
 
     this.sectionPositions = this.sectionOffsets.map(s => {
-      const adjustedTop = s.top - windowHeight / 2;
+      // const adjustedTop = s.top - windowHeight / 2;
+      const adjustedTop = s.top
 
       const pct = (adjustedTop / totalScrollable) * 100;
       return Math.min(100, Math.max(0, pct));
@@ -120,10 +121,12 @@ export class ScrollContainer implements AfterViewInit {
       const start = section.top;
       const end = section.top + section.height;
 
-      if (
-        scrollTop >= start - windowHeight / 2 &&
-        scrollTop < end - windowHeight / 2
-      ) {
+      // if (
+      //   scrollTop >= start - windowHeight / 2 &&
+      //   scrollTop < end - windowHeight / 2
+      // ) 
+      if (scrollTop >= start && scrollTop < end) 
+      {
         this.activeSection = section.id;
 
         const sectionProgress = ((scrollTop - start) / section.height);
