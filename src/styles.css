@@ -58,8 +58,8 @@ p {
 }
 
 
-/* 
-@media (max-width: 767px) {
+
+/* @media (max-width: 767px) {
 
   .mobile-shrink {
     display: flex;
@@ -86,4 +86,100 @@ p {
     box-sizing: border-box;
   }
 }   */
- 
+
+
+@media (max-width: 767px) {
+
+  .mobile-shrink {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    background: #faf8f5;
+    overflow-x: hidden;
+    padding: 10rem 0;
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .mobile-shrink .inner-frame {
+    width: 55%;
+    max-width: 480px;
+    background: #faf8f5;
+    padding: 2rem 1.2rem;
+    box-sizing: border-box;
+    overflow: hidden;
+    font-size: 0.875rem; /* ~14px */
+    line-height: 1.6;
+  }
+
+  .mobile-shrink .inner-frame section {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+
+  .mobile-shrink .inner-frame section > * {
+    max-width: 100%;
+    box-sizing: border-box;
+    word-break: break-word;
+  }
+
+  .mobile-shrink .inner-frame h1,
+  .mobile-shrink .inner-frame h2,
+  .mobile-shrink .inner-frame h3 {
+    font-size: 1.25rem; /* ~20px */
+    line-height: 1.4;
+  }
+
+  .mobile-shrink .inner-frame p,
+  .mobile-shrink .inner-frame li,
+  .mobile-shrink .inner-frame span {
+    font-size: 0.875rem;
+    line-height: 1.6;
+  }
+
+}
+
+
+
+/* @media (max-width: 767px) {
+
+  .mobile-shrink {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    background: #faf8f5;
+    overflow-x: hidden;
+    padding: 10rem 0;
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .mobile-shrink .inner-frame {
+    width:55%;
+    max-width: 480px;
+    background: #faf8f5;
+    padding: 2rem 1.2rem;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+
+  .mobile-shrink .inner-frame section {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+
+  .mobile-shrink .inner-frame section > * {
+    max-width: 100%;
+    overflow-wrap: break-word;
+    box-sizing: border-box;
+  }
+} */
+
