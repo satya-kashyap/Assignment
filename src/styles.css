@@ -58,7 +58,7 @@ p {
 }
 
 
-
+/* 
 @media (max-width: 767px) {
 
   .mobile-shrink {
@@ -85,5 +85,5 @@ p {
     margin: 0 auto;
     box-sizing: border-box;
   }
-}  
+}   */
  
