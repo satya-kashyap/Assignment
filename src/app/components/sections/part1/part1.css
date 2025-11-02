@@ -1,0 +1,37 @@
+.part2-hero {
+  position: relative;
+  width: 100vw;   /* full viewport width */
+  height: 100vh;  /* full viewport height */
+  margin: 0;
+  padding: 0;
+  background-color: #000;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  overflow: hidden;
+  left: 50%;
+  right: 50%;
+  transform: translateX(-50%); 
+}
+
+
+.part2-hero h1 {
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.part2-hero blockquote {
+  color: #cccccc;
+  margin-top: 0.5rem;
+  font-style: italic;
+}
+
+
+@media (min-width: 768px) {
+  .part2-hero {
+    padding: 2rem 2rem;
+  }
+}

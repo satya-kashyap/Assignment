@@ -6,11 +6,12 @@ import { Intro } from '../sections/intro/intro';
 import { Preface } from '../sections/preface/preface';
 import { Timeline } from '../sections/timeline/timeline';
 import { Outro } from '../sections/outro/outro';
+import { Part1 } from "../sections/part1/part1";
 
 @Component({
   selector: 'app-scroll-container',
   standalone: true,
-  imports: [CommonModule, CustomScrollbar, Cover, Intro, Preface, Timeline, Outro],
+  imports: [CommonModule, CustomScrollbar, Cover, Intro, Preface, Timeline, Outro, Part1],
   templateUrl: './scroll-container.html',
   styleUrls: ['./scroll-container.css']
 })
@@ -22,12 +23,12 @@ export class ScrollContainer implements AfterViewInit {
     { id: 'intro', label: 'Intro' },
     { id: 'preface', label: 'Preface' },
     { id: 'events', label: 'Events' },
+    { id: 'part1', label: 'content' },
     { id: 'credits', label: 'Credits' }
   ];
 
   activeSection = 'cover';
   overallProgress = 0;
-
   sectionOffsets: { id: string; top: number; height: number }[] = [];
   sectionPositions: number[] = [];
   positionsReady = false;
@@ -36,7 +37,7 @@ export class ScrollContainer implements AfterViewInit {
   onToggleBar(isOpen: boolean) {
     this.showMobileBar = isOpen;
   }
-  
+
   ngAfterViewInit() {
     this.waitForImagesThenCalc().then(() => {
       this.calculateSectionOffsets();
@@ -125,8 +126,7 @@ export class ScrollContainer implements AfterViewInit {
       //   scrollTop >= start - windowHeight / 2 &&
       //   scrollTop < end - windowHeight / 2
       // ) 
-      if (scrollTop >= start && scrollTop < end) 
-      {
+      if (scrollTop >= start && scrollTop < end) {
         this.activeSection = section.id;
 
         const sectionProgress = ((scrollTop - start) / section.height);
@@ -151,6 +151,9 @@ export class ScrollContainer implements AfterViewInit {
     if (!target) return;
     window.scrollTo({ top: target.offsetTop, behavior: 'smooth' });
   }
+
+
+
 }
 
 

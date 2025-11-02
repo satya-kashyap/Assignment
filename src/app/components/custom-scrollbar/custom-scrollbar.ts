@@ -18,7 +18,7 @@ export class CustomScrollbar {
   @Input() overallProgress = 0;
   @Input() scrollposition = 0;
   @Input() sectionPositions: number[] = [];
- 
+
   isHovered = false;
   hasScrolled = false;
   scrollTimeout: any;
@@ -48,7 +48,7 @@ export class CustomScrollbar {
     // Set timeout to fade out after user stops scrolling with smooth transition
     this.scrollTimeout = setTimeout(() => {
       if (!this.isHovered) { // Don't hide if hovering
-        gsap.to([scrollBarLabel, scrollBarTrack], {
+        gsap.to([scrollBarTrack], {
           autoAlpha: 0,
           duration: 0.6,
           ease: 'power3.out', // Smoother easing curve
@@ -61,7 +61,7 @@ export class CustomScrollbar {
   // Handle hover events for scrollbar
   onScrollbarHover(isHovering: boolean) {
     this.isHovered = isHovering;
-    
+
     const scrollBarLabel = document.querySelector('.scrollbar-label');
     const scrollBarTrack = document.querySelector('.scrollbar-track');
     const scrollBarLabels = document.querySelector('.scrollbar-labels');
@@ -73,7 +73,7 @@ export class CustomScrollbar {
         duration: 0.2,
         ease: 'power2.out'
       });
-      
+
       // Show labels with slight delay
       gsap.to(scrollBarLabels, {
         autoAlpha: 1,
@@ -95,13 +95,13 @@ export class CustomScrollbar {
       // Start fade out timer for main elements with smooth transition
       this.scrollTimeout = setTimeout(() => {
         if (this.hasScrolled) {
-          gsap.to([scrollBarLabel, scrollBarTrack], {
+          gsap.to([scrollBarTrack], {
             autoAlpha: 0,
             duration: 0.8,
             ease: 'power2.inOut',
-            stagger: 0.1, 
+            stagger: 0.1,
             onComplete: () => {
-              
+
             }
           });
         }
@@ -123,14 +123,14 @@ export class CustomScrollbar {
   }
 
   // for mobile touch dragging...
-  private isDragging = false;
-  private barHeight = 0;
-  private startY = 0;
+  isDragging = false;
+  barHeight = 0;
+  startY = 0;
 
   // for desktop mouse dragging...
   isDesktopDragging = false;
-  private desktopStartY = 0;
-  private trackElement: HTMLElement | null = null;
+  desktopStartY = 0;
+  trackElement: HTMLElement | null = null;
 
   onTouchStart(event: TouchEvent) {
     if (window.innerWidth >= 768) return;
@@ -155,21 +155,21 @@ export class CustomScrollbar {
   // Desktop mouse events for dragging
   onMouseDown(event: MouseEvent) {
     if (window.innerWidth < 768) return; // Only for desktop
-    
+
     this.isDesktopDragging = true;
     this.trackElement = event.target as HTMLElement;
     this.desktopStartY = event.clientY;
-    
+
     // Get the track height
     const trackEl = document.querySelector('.scrollbar-track') as HTMLElement;
     if (trackEl) {
       this.barHeight = trackEl.clientHeight;
     }
-    
+
     // Prevent text selection during drag
     event.preventDefault();
     document.body.style.userSelect = 'none';
-    
+
     // Add global mouse move and up listeners
     document.addEventListener('mousemove', this.handleMouseMove);
     document.addEventListener('mouseup', this.handleMouseUp);
@@ -177,87 +177,135 @@ export class CustomScrollbar {
 
   private handleMouseMove = (event: MouseEvent) => {
     if (!this.isDesktopDragging) return;
-    
+
     const trackEl = document.querySelector('.scrollbar-track') as HTMLElement;
     if (!trackEl) return;
-    
+
     // Get track position and dimensions
     const trackRect = trackEl.getBoundingClientRect();
     const relativeY = event.clientY - trackRect.top;
-    
+
     // Calculate scroll percentage based on mouse position within track
     const scrollPercentage = Math.max(0, Math.min(1, relativeY / trackRect.height));
-    
+
     // Calculate and set scroll position
     const scrollHeight = document.body.scrollHeight - window.innerHeight;
     const newScrollTop = scrollPercentage * scrollHeight;
-    
-    window.scrollTo({ 
-      top: newScrollTop, 
-      behavior: 'auto' 
+
+    window.scrollTo({
+      top: newScrollTop,
+      behavior: 'auto'
     });
-    
+
     event.preventDefault();
   }
 
   private handleMouseUp = (event: MouseEvent) => {
     if (!this.isDesktopDragging) return;
-    
+
     this.isDesktopDragging = false;
     document.body.style.userSelect = '';
-    
+
     // Remove global listeners
     document.removeEventListener('mousemove', this.handleMouseMove);
     document.removeEventListener('mouseup', this.handleMouseUp);
-    
+
     event.preventDefault();
   }
 
   // Click to seek functionality
   onDesktopTrackClick(event: MouseEvent) {
     if (this.isDesktopDragging) return; // Don't seek if we're dragging
-    
+
     const trackEl = event.currentTarget as HTMLElement;
     const trackRect = trackEl.getBoundingClientRect();
     const clickY = event.clientY - trackRect.top;
-    
+
     // Calculate scroll percentage based on click position
     const scrollPercentage = Math.max(0, Math.min(1, clickY / trackRect.height));
-    
+
     // Calculate and smoothly scroll to position
     const scrollHeight = document.body.scrollHeight - window.innerHeight;
     const targetScrollTop = scrollPercentage * scrollHeight;
-    
-    window.scrollTo({ 
-      top: targetScrollTop, 
-      behavior: 'smooth' 
+
+    window.scrollTo({
+      top: targetScrollTop,
+      behavior: 'smooth'
     });
   }
 
   // Mobile seek-to-scroll functionality
-onMobileTrackClick(event: MouseEvent) {
-  // Prevent interfering with drag
-  if (this.isDragging) return;
+  onMobileTrackClick(event: MouseEvent) {
+    // Prevent interfering with drag
+    if (this.isDragging) return;
 
-  const trackEl = event.currentTarget as HTMLElement;
-  const trackRect = trackEl.getBoundingClientRect();
-  const clickY = event.clientY - trackRect.top;
+    const trackEl = event.currentTarget as HTMLElement;
+    const trackRect = trackEl.getBoundingClientRect();
+    const clickY = event.clientY - trackRect.top;
 
-  // Scrollable page height
-  const scrollHeight = document.body.scrollHeight - window.innerHeight;
+    // Scrollable page height
+    const scrollHeight = document.body.scrollHeight - window.innerHeight;
 
-  // Where to scroll (percentage of track height)
-  const scrollPercent = Math.max(0, Math.min(1, clickY / trackRect.height));
-  const newScrollTop = scrollPercent * scrollHeight;
+    // Where to scroll (percentage of track height)
+    const scrollPercent = Math.max(0, Math.min(1, clickY / trackRect.height));
+    const newScrollTop = scrollPercent * scrollHeight;
 
-  // Scroll smoothly
-  window.scrollTo({
-    top: newScrollTop,
-    behavior: 'smooth'
-  });
-}
+    // Scroll smoothly
+    window.scrollTo({
+      top: newScrollTop,
+      behavior: 'smooth'
+    });
+  }
 
+  getHeaderStyle() {
+    switch (this.activeSection) {
+      case 'cover':
+        return { backgroundColor: '#646464', color: '#ffffff' }; // grey tone 
+      case 'intro':
+        return { backgroundColor: '#0056b3', color: '#ffffff' }; // deep blue
+      case 'preface':
+        return { backgroundColor: '#f6f6f6', color: '#111111' }; // light tone
+      case 'events':
+        return { backgroundColor: '#1d4ed8', color: '#ffffff' }; // vibrant blue
+      case 'part1':
+        return { backgroundColor: '#cccccc', color: '#111111' }; // light blue tone
+      case 'credits':
+        return { backgroundColor: '#222222', color: '#ffffff' }; // dark tone
+      default:
+        return { backgroundColor: 'transparent', color: '#000000' };
+    }
+  }
 
+  getActiveHeaderOpenStyle() {
+    return {
+      backgroundColor: '#ffffff',
+      color: '#1d4ed8',
+      boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
+    };
+  }
+
+  getToggleButtonStyle() {
+    return {
+      backgroundColor: 'rgba(255,255,255,0.25)',
+      backdropFilter: 'blur(4px)',
+    };
+  }
+
+  getToggleIconColor() {
+    switch (this.activeSection) {
+      case 'preface':
+        return '#111111';
+      default:
+        return '#ffffff';
+    }
+  }
+
+  getCloseButtonStyle() {
+    return {
+      backgroundColor: '#1d4ed8',
+      color: '#ffffff',
+    };
+  }
 
 }
 

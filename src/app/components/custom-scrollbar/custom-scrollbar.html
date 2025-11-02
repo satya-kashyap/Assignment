@@ -11,13 +11,14 @@
     </div>
 
     <!-- Scroll track -->
-    <div class="scrollbar-track relative h-[80vh] w-[6px] bg-neutral-300/70 opacity-0 cursor-pointer"
+    <div
+      class="scrollbar-track relative h-[80vh] w-[6px] bg-neutral-300/70 opacity-0 cursor-pointer transition-all duration-300 ease-out"
       [class.w-[12px]]="isHovered" [class.w-[6px]]="!isHovered" [class.cursor-grabbing]="isDesktopDragging"
       [class.cursor-grab]="!isDesktopDragging && isHovered" (click)="onDesktopTrackClick($event)"
       (mousedown)="onMouseDown($event)">
 
       <!-- Blue filled progress bar -->
-      <div class="absolute left-0 top-0 bg-blue-600 transition-all duration-500 ease-out pointer-events-none"
+      <div class="absolute left-0 top-0 bg-blue-600 transition-all duration-300 ease-out pointer-events-none"
         [style.height.%]="overallProgress" [class.w-[12px]]="isHovered" [class.w-[6px]]="!isHovered"
         [class.rounded-none]="true">
       </div>
@@ -33,7 +34,7 @@
     <div class="scrollbar-labels absolute right-[2.5rem] top-0 h-[80vh] flex flex-col items-end justify-start opacity-0"
       [class.opacity-0]="!isHovered" [class.opacity-100]="isHovered">
       <ng-container *ngFor="let s of sections; let i = index">
-        <div class="absolute right-0 -translate-y-1/2 cursor-pointer transition-all duration-300"
+        <div class="absolute right-0 -translate-y-1/2 cursor-pointer transition-all duration-300 -mr-5"
           [style.top.%]="(sectionPositions[i] || 0)" (click)="navigate.emit(s.id)">
           <span class="text-[0.95rem] font-medium" [class.text-blue-700]="s.id === activeSection"
             [class.text-gray-600]="s.id !== activeSection">
@@ -47,11 +48,9 @@
 </div>
 
 
-
-
 <!-- MOBILE VERSION -->
 
-<div class="block md:hidden fixed top-0 left-0 w-full z-50">
+<!-- <div class="block md:hidden fixed top-0 left-0 w-full z-50">
 
   <button *ngIf="!showMobileBar" (click)="toggleMobileBar()"
     class="fixed right-4 top-[calc(env(safe-area-inset-top)+1rem)] bg-blue-600 text-white rounded-full p-3 shadow-lg z-50 transition-transform duration-300 active:scale-90">
@@ -62,7 +61,7 @@
   </button>
 
   <div *ngIf="showMobileBar" class="fixed top-0 left-0 w-full h-12 bg-white flex items-center justify-center
-           text-blue-700 font-semibold text-base shadow-sm z-50 transition-all duration-300
+            text-blue-700 font-semibold text-base shadow-sm z-50 transition-all duration-300
            pt-[env(safe-area-inset-top)]">
     {{ getActiveLabel() }}
     <button (click)="toggleMobileBar()" class="absolute right-4 bg-blue-600 text-white rounded-full p-2">
@@ -91,7 +90,7 @@
 
     <div class="absolute right-[2rem] top-0 h-[65vh] flex flex-col items-end justify-start">
       <ng-container *ngFor="let s of sections; let i = index">
-        <div class="absolute right-0 -translate-y-1/2 cursor-pointer transition-all duration-300"
+        <div class="absolute right-0 -translate-y-1/2 cursor-pointer transition-all duration-300 -mr-3"
           [style.top.%]="(sectionPositions[i] || 0)" (click)="navigate.emit(s.id)">
           <span class="text-[0.9rem] font-medium" [class.text-blue-700]="s.id === activeSection"
             [class.text-gray-800]="s.id !== activeSection">
@@ -99,6 +98,79 @@
           </span>
         </div>
       </ng-container>
+    </div>
+  </div>
+</div>  -->
+
+
+
+<!-- MOBILE VERSION -->
+<div class="block md:hidden fixed top-0 left-0 w-full z-[60]">
+
+  <!-- Always visible mobile header -->
+  <div class="fixed top-0 left-0 w-full h-16 flex items-center justify-center font-semibold text-lg z-[70]
+              transition-all duration-500 ease-in-out"
+    [ngStyle]="showMobileBar ? getActiveHeaderOpenStyle() : getHeaderStyle()">
+
+    <!-- Active section label -->
+    <span [ngStyle]="showMobileBar ? { color: '#1d4ed8' } : { color: getHeaderStyle().color }">
+      {{ getActiveLabel() }}
+    </span>
+
+    <!-- Toggle button-->
+    <button (click)="toggleMobileBar()"
+      class="absolute right-5 rounded-full p-3 shadow-md transition-transform duration-300 active:scale-90"
+      [ngStyle]="showMobileBar ? getCloseButtonStyle() : getToggleButtonStyle()">
+
+      <!-- Plus Icon -->
+      <svg *ngIf="!showMobileBar" xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24"
+        [attr.stroke]="getToggleIconColor()" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+      </svg>
+
+      <!-- Cross Icon -->
+      <svg *ngIf="showMobileBar" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+        stroke="#ffffff" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+  </div>
+
+  <!-- Scroll Overlay (transparent) -->
+  <div *ngIf="showMobileBar" class="custom-scrollbar show fixed inset-0 bg-transparent z-[65]
+              pointer-events-none transition-all duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)]">
+
+    <!-- Scrollbar + labels on right -->
+    <div
+      class="absolute right-[1.2rem] top-[4.5rem] h-[70vh] flex flex-col items-end justify-start pointer-events-auto">
+
+      <!-- Scrollbar track -->
+      <div class="relative h-full w-[10px] bg-neutral-300/70 rounded-full touch-none
+                  transition-all duration-300 ease-in-out shadow-inner" (touchstart)="onTouchStart($event)"
+        (touchmove)="onTouchMove($event)" (touchend)="onTouchEnd()" (click)="onMobileTrackClick($event)">
+
+        <!-- Blue progress bar -->
+        <div class="absolute left-0 top-0 bg-blue-600 rounded-full transition-all duration-200"
+          [style.height.%]="overallProgress" style="width:10px;"></div>
+
+        <!-- Section markers -->
+        <ng-container *ngFor="let i of sectionPositions">
+          <div class="absolute left-0 w-full h-[2px] bg-white/80" [style.top.%]="i"></div>
+        </ng-container>
+      </div>
+
+      <!-- Section labels -->
+      <div class="absolute right-[2.5rem] top-0 h-full flex flex-col items-end justify-start">
+        <ng-container *ngFor="let s of sections; let i = index">
+          <div class="absolute right-0 -translate-y-1/2 cursor-pointer transition-all duration-300 -mr-5"
+            [style.top.%]="(sectionPositions[i] || 0)" (click)="navigate.emit(s.id)">
+            <span class="text-[0.9rem] font-medium" [class.text-blue-700]="s.id === activeSection"
+              [class.text-gray-800]="s.id !== activeSection">
+              {{ s.label }}
+            </span>
+          </div>
+        </ng-container>
+      </div>
     </div>
   </div>
 </div>

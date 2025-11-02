@@ -67,7 +67,7 @@ p {
     align-items: flex-start;
     background: #faf8f5;
     overflow-x: hidden;
-    padding: 6rem 0;
+    padding: 10rem 0;
     transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
@@ -85,4 +85,5 @@ p {
     margin: 0 auto;
     box-sizing: border-box;
   }
-}
+}  
+ 
