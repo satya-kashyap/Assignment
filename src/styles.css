@@ -101,14 +101,15 @@ p {
   }
 
   .mobile-shrink .inner-frame {
-    width: 55%;
+    width: 54%;
     max-width: 480px;
     background: #faf8f5;
-    padding: 2rem 1.2rem;
+    
+    margin-right: 10px;
     box-sizing: border-box;
     overflow: hidden;
-    font-size: 0.875rem; /* ~14px */
-    line-height: 1.6;
+    font-size: 0.600rem; /* ~12px */
+    line-height: 0.9;
   }
 
   .mobile-shrink .inner-frame section {
@@ -130,7 +131,7 @@ p {
   .mobile-shrink .inner-frame h1,
   .mobile-shrink .inner-frame h2,
   .mobile-shrink .inner-frame h3 {
-    font-size: 1.25rem; /* ~20px */
+    font-size: 0.875rem; /* ~14px */
     line-height: 1.4;
   }
 

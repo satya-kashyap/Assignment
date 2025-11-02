@@ -51,6 +51,7 @@ export class ScrollContainer implements AfterViewInit {
       this.positionsReady = true;
     });
   }
+  
 
   async waitForImagesThenCalc(timeout = 800) {
     const container = this.content?.nativeElement;
